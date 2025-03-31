@@ -1,0 +1,27 @@
+name: CMS Master Schema Router
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'  # optional: daily refresh
+
+jobs:
+  run-router:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ✨ Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📁 Install requirements
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: 🤖 Run CMS schema router
+        run: python master_schema_router.py
+```
