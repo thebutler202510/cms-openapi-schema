@@ -1,27 +1,30 @@
-name: CMS Master Schema Router
+name: CMS Schema Generator
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 2 * * *'  # optional: daily refresh
+    inputs:
+      gpt_query:
+        description: "Enter a search keyword"
+        required: false
+        default: "plan finder drug cost"
 
 jobs:
-  run-router:
+  generate-schema:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ✅ Checkout repo
+      - name: 📁 Checkout repo
         uses: actions/checkout@v3
 
-      - name: ✨ Set up Python 3.11
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 📁 Install requirements
-        run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt || echo "No requirements.txt found"
 
-      - name: 🤖 Run CMS schema router
+      - name: 🤖 Run schema router
         run: python master_schema_router.py
-```
+        env:
+          GPT_QUERY: ${{ github.event.inputs.gpt_query }}
