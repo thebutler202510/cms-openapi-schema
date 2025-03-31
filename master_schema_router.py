@@ -1,7 +1,4 @@
-```python
-import json
-import os
-### File: `master_schema_router.py`
+
 ```python
 import json
 import os
@@ -49,4 +46,3 @@ if best_match:
         json.dump(schema, f, indent=2)
 else:
     print("No matching schema found.")
-```
