@@ -1,5 +1,3 @@
-
-
 import json
 import os
 
@@ -18,7 +16,7 @@ for dataset in catalog.get("dataset", []):
         best_match = dataset
         break
 
-# Generate schema from match
+# Generate OpenAPI schema
 if best_match:
     dist = best_match.get("distribution", [])[0]
     access_url = dist.get("accessURL") or dist.get("downloadURL")
@@ -36,13 +34,17 @@ if best_match:
                     "summary": best_match.get("title"),
                     "operationId": "getData",
                     "responses": {
-                        "200": {"description": "Success"}
+                        "200": {
+                            "description": "Success"
+                        }
                     }
                 }
             }
         }
     }
+
     with open("schema_output.json", "w") as f:
         json.dump(schema, f, indent=2)
+    print("✅ Schema saved as schema_output.json")
 else:
-    print("No matching schema found.")
+    print("❌ No matching schema found.")
